@@ -3,6 +3,14 @@ name = "nucleus"
 version = "0.1.0"
 authors = ["oOBoomberOo <boombercmd123@gmail.com>"]
 edition = "2018"
+description = "Datapack Template generator"
+repository = "https://github.com/oOBoomberOo/Nucleus"
+license = "MIT"
+keywords = ["minecraft", "datapack", "template"]
+categories = ["command-line-utilities"]
+
+[badges]
+github = { repository = "oOBoomberOo/Nucleus" }
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
