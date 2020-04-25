@@ -10,7 +10,7 @@ keywords = ["minecraft", "datapack", "template"]
 categories = ["command-line-utilities"]
 
 [badges]
-github = { repository = "oOBoomberOo/Nucleus" }
+github = { repository = "oOBoomberOo/Nucleus", branch= "master" }
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
