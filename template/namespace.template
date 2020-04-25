@@ -1,0 +1,19 @@
+# data/global/advancements/<namespace>.json
+{
+    "display": {
+        "title": "<player_name>",
+        "description": "",
+        "icon": {
+            "item": "minecraft:player_head",
+            "nbt": "{SkullOwner: '<player_name>'}"
+        },
+        "show_toast": false,
+        "announce_to_chat": false
+    },
+    "parent": "global:root",
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:tick"
+        }
+    }
+}

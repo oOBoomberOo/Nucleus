@@ -1,0 +1,18 @@
+# data/<namespace>/advancements/<datapack>.json
+{
+    "display": {
+        "title": "<datapack>",
+        "description": "<description>",
+        "icon": {
+            "item": "<display_item>"
+        },
+        "announce_to_chat": false,
+        "show_toast": false
+    },
+    "parent": "global:<namespace>",
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:tick"
+        }
+    }
+}
