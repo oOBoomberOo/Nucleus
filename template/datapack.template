@@ -1,7 +1,7 @@
 # data/<namespace>/advancements/<datapack>.json
 {
     "display": {
-        "title": "<datapack>",
+        "title": "<datapack_name>",
         "description": "<description>",
         "icon": {
             "item": "<display_item>"
