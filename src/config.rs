@@ -11,29 +11,29 @@ use std::collections::HashMap;
 /// ```
 #[derive(Default)]
 pub struct Config {
-    value: HashMap<String, String>,
+	value: HashMap<String, String>,
 }
 
 impl Config {
-    pub fn new() -> Config {
-        Config::default()
-    }
+	pub fn new() -> Config {
+		Config::default()
+	}
 
-    /// Insert a config variable
-    pub fn insert(mut self, key: impl Into<String>, value: impl Into<String>) -> Config {
-        let key = key.into();
-        let value = value.into();
-        self.value.insert(key, value);
-        self
-    }
+	/// Insert a config variable
+	pub fn insert(mut self, key: impl Into<String>, value: impl Into<String>) -> Config {
+		let key = key.into();
+		let value = value.into();
+		self.value.insert(key, value);
+		self
+	}
 
 	/// Apply the current config to the given string
-    pub fn apply(&self, content: impl Into<String>) -> String {
-        let content = content.into();
-        self.value
-            .iter()
-            .fold(content, |content, (key, value)| content.replace(key, value))
-    }
+	pub fn apply(&self, content: impl Into<String>) -> String {
+		let content = content.into();
+		self.value
+			.iter()
+			.fold(content, |content, (key, value)| content.replace(key, value))
+	}
 }
 
 #[cfg(test)]
@@ -43,8 +43,7 @@ mod tests {
 	#[test]
 	fn replace_once() {
 		let content = r#"Replace <foo> once"#;
-		let config = Config::new()
-			.insert("<foo>", "me");
+		let config = Config::new().insert("<foo>", "me");
 
 		assert_eq!(config.apply(content), "Replace me once");
 	}
@@ -79,8 +78,7 @@ mod tests {
 		C: <explosion>
 		D: <explosion>
 		"#;
-		let config = Config::new()
-			.insert("<explosion>", "エクプロシオン");
+		let config = Config::new().insert("<explosion>", "エクプロシオン");
 
 		let result = config.apply(content);
 		let expect = r#"

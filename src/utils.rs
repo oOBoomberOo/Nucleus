@@ -1,5 +1,5 @@
-use anyhow::Result;
 use crate::{config::Config, template::Template};
+use anyhow::Result;
 
 /// Attempt to convert `input` into namespace.
 /// * This function doesn't handle invalid namespace characters.
@@ -15,7 +15,8 @@ pub fn get_template_with_config(config: &Config) -> Result<Vec<Template>> {
 		include_str!("../template/pack.template"),
 		include_str!("../template/root.template"),
 	];
-	templates.iter()
+	templates
+		.iter()
 		.map(|content| Template::from_str(content, config))
 		.collect()
 }
@@ -31,14 +32,8 @@ mod tests {
 			"boomber:something_here"
 		);
 
-		assert_eq!(
-			namespacified("Hello@World"),
-			"hello@world"
-		);
+		assert_eq!(namespacified("Hello@World"), "hello@world");
 
-		assert_eq!(
-			namespacified("test ()"),
-			"test_()"
-		);
+		assert_eq!(namespacified("test ()"), "test_()");
 	}
 }

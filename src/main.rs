@@ -1,11 +1,14 @@
+use nucleus::utils::*;
 use nucleus::validator::*;
 use nucleus::Config;
-use nucleus::utils::*;
 
-use std::path::PathBuf;
 use anyhow::Result;
-use dialoguer::{theme::{ColorfulTheme, Theme}, Input};
 use dialoguer::Validator;
+use dialoguer::{
+	theme::{ColorfulTheme, Theme},
+	Input,
+};
+use std::path::PathBuf;
 use structopt::StructOpt;
 
 fn main() {
@@ -21,8 +24,8 @@ fn run() -> Result<()> {
 	let datapack_name = datapack_name(&command, theme)?;
 	let description = description(&command, theme)?;
 	let player_name = player_name(&command, theme)?;
-	let display_item = display_item(&command, theme)?;	
-	
+	let display_item = display_item(&command, theme)?;
+
 	let datapack = namespacified(&datapack_name);
 	let namespace = namespacified(&player_name);
 
@@ -38,10 +41,12 @@ fn run() -> Result<()> {
 
 	let path = match command.state {
 		State::New => PathBuf::from(datapack_name),
-		State::Init => PathBuf::from("./")
+		State::Init => PathBuf::from("./"),
 	};
 
-	templates.iter().try_for_each(|template| template.generate(&path))?;
+	templates
+		.iter()
+		.try_for_each(|template| template.generate(&path))?;
 
 	Ok(())
 }
@@ -80,10 +85,10 @@ fn player_name(option: &Command, theme: &dyn Theme) -> Result<String> {
 	}
 
 	let result = Input::<String>::with_theme(theme)
-	.with_prompt("Player name")
-	.allow_empty(false)
-	.validate_with(NameValidator)
-	.interact()?;
+		.with_prompt("Player name")
+		.allow_empty(false)
+		.validate_with(NameValidator)
+		.interact()?;
 
 	Ok(result)
 }
@@ -93,7 +98,7 @@ fn display_item(option: &Command, theme: &dyn Theme) -> Result<String> {
 		NamespaceValidator.validate(display_item)?;
 		return Ok(display_item.to_owned());
 	}
-	
+
 	let result = Input::<String>::with_theme(theme)
 		.with_prompt("Display Item ID")
 		.allow_empty(false)
@@ -121,7 +126,7 @@ struct Command {
 	display_item: Option<String>,
 
 	#[structopt(subcommand)]
-	state: State
+	state: State,
 }
 
 #[derive(StructOpt, Debug)]
@@ -129,5 +134,5 @@ enum State {
 	/// Create new datapack project inside current directory
 	New,
 	/// Initialize datapack project from current directory
-	Init
+	Init,
 }

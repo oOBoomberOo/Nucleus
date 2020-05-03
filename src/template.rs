@@ -26,7 +26,7 @@ impl Template {
 			.next()
 			.map(|x| x.trim())
 			.ok_or(TemplateError::UnexpectedEOF)?;
-		
+
 		if !path.starts_with('#') {
 			return Err(TemplateError::PathSymbolNotFound.into());
 		}
@@ -35,7 +35,7 @@ impl Template {
 			.get(1..)
 			.map(|x| x.trim())
 			.ok_or(TemplateError::UnexpectedEOF)?;
-			
+
 		let content: String = lines.map(|x| format!("{}\n", x)).collect();
 		let result = Template::new(path, content);
 		Ok(result)
@@ -69,7 +69,7 @@ impl PartialEq for Template {
 	/// To check for equality, This method will check:
 	/// 1. The file path of both templates.
 	/// 2. The "clean content" of both templates.
-	/// 
+	///
 	/// Note: Clean Content is a whitespace-removed content of the template, This is helpful in testing where the indentation can mess up the equality check.
 	fn eq(&self, other: &Template) -> bool {
 		self.path.eq(&other.path) && self.clean_content().eq(&other.clean_content())
@@ -78,7 +78,12 @@ impl PartialEq for Template {
 
 impl fmt::Debug for Template {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(f, "Template {{ path: {:?}, content: {:?} }}", self.path, self.clean_content())
+		write!(
+			f,
+			"Template {{ path: {:?}, content: {:?} }}",
+			self.path,
+			self.clean_content()
+		)
 	}
 }
 
@@ -87,7 +92,7 @@ enum TemplateError {
 	#[error("Unexpected End-of-File")]
 	UnexpectedEOF,
 	#[error("Path symbol not found")]
-	PathSymbolNotFound
+	PathSymbolNotFound,
 }
 
 #[cfg(test)]
@@ -184,7 +189,10 @@ mod tests {
 	fn with_invalid_syntax() {
 		let content = r#"Hello, world!"#;
 		let config = Config::new();
-		let result: TemplateError = Template::from_str(content, &config).unwrap_err().downcast().unwrap();
+		let result: TemplateError = Template::from_str(content, &config)
+			.unwrap_err()
+			.downcast()
+			.unwrap();
 		assert_eq!(result, TemplateError::PathSymbolNotFound);
 	}
 }

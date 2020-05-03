@@ -27,8 +27,7 @@ impl Validator for NamespaceValidator {
 	fn validate(&self, text: &str) -> Result<(), Self::Err> {
 		if NAMESPACE_VALIDATOR.is_match(&text) {
 			Ok(())
-		}
-		else {
+		} else {
 			Err(ValidatorError::InvalidNamespace(text.to_owned()))
 		}
 	}
@@ -42,8 +41,7 @@ impl Validator for NameValidator {
 	fn validate(&self, text: &str) -> Result<(), Self::Err> {
 		if NAME_VALIDATOR.is_match(&text) {
 			Ok(())
-		}
-		else {
+		} else {
 			Err(ValidatorError::InvalidName(text.to_owned()))
 		}
 	}
@@ -57,8 +55,7 @@ impl Validator for DatapackNameValidator {
 	fn validate(&self, text: &str) -> Result<(), Self::Err> {
 		if DATAPACK_NAME_VALIDATOR.is_match(&text) {
 			Ok(())
-		}
-		else {
+		} else {
 			Err(ValidatorError::InvalidDatapackName(text.to_owned()))
 		}
 	}

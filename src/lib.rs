@@ -1,10 +1,10 @@
-mod template;
 mod config;
+mod template;
 
-/// String Validator
-pub mod validator;
 /// Utility functions
 pub mod utils;
+/// String Validator
+pub mod validator;
 
-pub use template::Template;
 pub use config::Config;
+pub use template::Template;
