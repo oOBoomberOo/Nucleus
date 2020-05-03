@@ -1,17 +1,12 @@
-mod validator;
-mod template;
-mod config;
-mod utils;
+use nucleus::validator::*;
+use nucleus::Config;
+use nucleus::utils::*;
 
 use std::path::PathBuf;
 use anyhow::Result;
 use dialoguer::{theme::{ColorfulTheme, Theme}, Input};
 use dialoguer::Validator;
 use structopt::StructOpt;
-use validator::*;
-use config::Config;
-use utils::*;
-use template::Template;
 
 fn main() {
 	if let Err(e) = run() {
@@ -39,7 +34,7 @@ fn run() -> Result<()> {
 		.insert("<player_name>", player_name)
 		.insert("<display_item>", display_item);
 
-	let templates = get_template(&config)?;
+	let templates = get_template_with_config(&config)?;
 
 	let path = match command.state {
 		State::New => PathBuf::from(datapack_name),
@@ -49,18 +44,6 @@ fn run() -> Result<()> {
 	templates.iter().try_for_each(|template| template.generate(&path))?;
 
 	Ok(())
-}
-
-fn get_template(config: &Config) -> Result<Vec<Template>> {
-	let templates = vec![
-		include_str!("../template/datapack.template"),
-		include_str!("../template/namespace.template"),
-		include_str!("../template/pack.template"),
-		include_str!("../template/root.template"),
-	];
-	templates.iter()
-		.map(|content| Template::from_str(content, config))
-		.collect()
 }
 
 fn datapack_name(option: &Command, theme: &dyn Theme) -> Result<String> {
@@ -121,15 +104,15 @@ fn display_item(option: &Command, theme: &dyn Theme) -> Result<String> {
 
 #[derive(StructOpt, Debug)]
 struct Command {
-	/// Datapack's Display Name
+	/// Datapack name
 	#[structopt(short = "d", long = "name")]
 	datapack_name: Option<String>,
 
-	/// Datapack's description
+	/// Datapack description
 	#[structopt(short = "D", long = "desc")]
 	description: Option<String>,
 
-	/// Player's name
+	/// Player name
 	#[structopt(short = "p", long = "player")]
 	player_name: Option<String>,
 

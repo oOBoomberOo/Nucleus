@@ -6,19 +6,20 @@ use std::{
 };
 use thiserror::Error;
 
+/// Template file
 pub struct Template {
 	path: PathBuf,
-	content: String,
+	pub content: String,
 }
 
 impl Template {
-	pub fn new(path: impl Into<PathBuf>, content: impl Into<String>) -> Template {
+	pub(crate) fn new(path: impl Into<PathBuf>, content: impl Into<String>) -> Template {
 		let path = path.into();
 		let content = content.into();
 		Template { path, content }
 	}
 
-	pub fn from_str(content: &str, config: &Config) -> Result<Template> {
+	pub(crate) fn from_str(content: &str, config: &Config) -> Result<Template> {
 		let content = config.apply(content);
 		let mut lines = content.lines().skip_while(|line| line.is_empty());
 		let path: &str = lines
@@ -40,11 +41,13 @@ impl Template {
 		Ok(result)
 	}
 
+	/// Remove all whitespace from template. **Should only be used for testing!**
 	fn clean_content(&self) -> String {
 		self.content.split_whitespace().collect()
 	}
 
-	fn ensure_parent(&self, path: impl AsRef<Path>) -> Result<()> {
+	/// Ensure that parent exists before generating the template
+	pub(crate) fn ensure_parent(&self, path: impl AsRef<Path>) -> Result<()> {
 		if let Some(parent) = path.as_ref().parent() {
 			fs::create_dir_all(parent)?;
 		}
@@ -52,6 +55,7 @@ impl Template {
 		Ok(())
 	}
 
+	/// Generate template to the given root
 	pub fn generate(&self, root: impl AsRef<Path>) -> Result<()> {
 		let root = root.as_ref();
 		let path = root.join(&self.path);
@@ -62,6 +66,11 @@ impl Template {
 }
 
 impl PartialEq for Template {
+	/// To check for equality, This method will check:
+	/// 1. The file path of both templates.
+	/// 2. The "clean content" of both templates.
+	/// 
+	/// Note: Clean Content is a whitespace-removed content of the template, This is helpful in testing where the indentation can mess up the equality check.
 	fn eq(&self, other: &Template) -> bool {
 		self.path.eq(&other.path) && self.clean_content().eq(&other.clean_content())
 	}

@@ -19,6 +19,7 @@ pub enum ValidatorError {
 	InvalidDatapackName(String),
 }
 
+/// Validating Namespace ID
 pub struct NamespaceValidator;
 
 impl Validator for NamespaceValidator {
@@ -33,6 +34,7 @@ impl Validator for NamespaceValidator {
 	}
 }
 
+/// Validating Player name
 pub struct NameValidator;
 
 impl Validator for NameValidator {
@@ -47,6 +49,7 @@ impl Validator for NameValidator {
 	}
 }
 
+/// Validating Datapack Name that *could* be transformed into namespace
 pub struct DatapackNameValidator;
 
 impl Validator for DatapackNameValidator {
